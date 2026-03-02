@@ -1,16 +1,77 @@
-# React + Vite
+# AntaraShanti | Mindful Campus Edition
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AntaraShanti is a premium, avant-garde web application designed specifically as a "private emotional intelligence infrastructure for modern campuses." It aims to bridge the gap between student mental health struggles and institutional support by offering real-time, AI-driven check-ins, cognitive reframing modules, and proactive, anonymized analytics for administrators. 
 
-Currently, two official plugins are available:
+The application features a dark, sophisticated aesthetic ("electric lavender on midnight blue") to convey enterprise-grade security, clinical authority, and a modern, high-tech approach to mental well-being—moving beyond traditional "stigma-heavy" mental health portals.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Key Features
 
-## React Compiler
+*   **Interactive Emotional Engine**: AI-powered check-ins and contextual coping generation that act as a frictionless first point of contact for students.
+*   **Split Experience Demo Form**: A unique `/demo` flow allowing users to preview both the Student Check-In experience and the Administrative Dashboard.
+*   **Stateful interactions**: Advanced form feedback (validating credentials, processing requests) for a professional, secure feel.
+*   **Campus Node Tracking**: Dynamic, thematic UI elements showcasing the platform's active footprint and operational status.
+*   **Resource Library**: A dedicated space for clinical methodologies and downloadable whitepapers.
+*   **Cinematic UI/UX**: Built with custom Tailwind configurations, GSAP scroll animations, backdrop blurs, and magnetic button effects to create a highly engaging, immersive experience.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+*   **Frontend Framework**: React (Vite)
+*   **Styling**: Tailwind CSS (Custom thematic config)
+*   **Animations**: GSAP (GreenSock Animation Platform) + ScrollTrigger
+*   **Routing**: React Router DOM (v6+)
+*   **Icons**: Lucide React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Project Structure
+
+```text
+AntaraShanti/
+├── public/                 # Static assets (images, fonts, dummy PDFs)
+│   ├── logo.png            # Main platform logo (Dark Mode Optimized)
+│   ├── hero-bg.png         # Cinematic campus background image
+│   ├── campus-readiness-brief.pdf # Demo request download
+│   └── executive-summary-roi.pdf  # Resources download
+├── src/                    # Source code
+│   ├── components/         # Reusable UI elements
+│   │   ├── Navbar.jsx      # Global sticky navigation with scroll blur
+│   │   ├── Footer.jsx      # Global footer with dynamic status node
+│   │   └── ScrollToTop.jsx # Route transition utility
+│   ├── pages/              # Main route views
+│   │   ├── Home.jsx        # Landing page & core value proposition
+│   │   ├── Features.jsx    # Deep dive into platform capabilities
+│   │   ├── CampusImpact.jsx# Statistics and institutional outcomes
+│   │   ├── Security.jsx    # FERPA compliance and privacy architecture
+│   │   ├── Community.jsx   # Student stories and engagement
+│   │   ├── About.jsx       # Mission and clinical principles
+│   │   ├── Resources.jsx   # Methodologies and whitepaper downloads
+│   │   └── Demo.jsx        # Interactive platform simulation & stateful form
+│   ├── App.jsx             # Main application layout and router setup
+│   ├── index.css           # Global stylesheet and custom Tailwind utilities (animations)
+│   └── main.jsx            # React entry point
+├── index.html              # HTML template
+├── tailwind.config.js      # Thematic color palette and typography configuration
+├── vite.config.js          # Vite build configuration
+└── package.json            # Dependencies and scripts (npm run dev)
+```
+
+## 🚀 Getting Started Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/swaroop-5-6-7/antarashanti.git
+   ```
+2. **Navigate into the directory:**
+   ```bash
+   cd antarashanti
+   ```
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+## 🛡️ Privacy & Compliance Note
+
+*(Mock Data)* This application is a frontend demonstration. In a production environment, all data highlighted in the `CampusImpact` and `Security` sections would adhere strictly to FERPA/HIPAA compliance standards, utilizing end-to-end encryption and differential privacy algorithms to protect student identities.
