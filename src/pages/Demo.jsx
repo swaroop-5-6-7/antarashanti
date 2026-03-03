@@ -6,6 +6,7 @@ import {
     ArrowRight, Sparkles, Database, FileDigit, Settings, RefreshCw, Lock,
     CheckCircle2, FileText, TrendingUp
 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,12 +15,45 @@ export default function Demo() {
     const [activeView, setActiveView] = useState('student');
     const [formState, setFormState] = useState('idle'); // 'idle' | 'submitting' | 'success'
 
-    const handleDemoRequest = (e) => {
+    const handleDemoRequest = async (e) => {
         e.preventDefault();
         setFormState('submitting');
-        setTimeout(() => {
-            setFormState('success');
-        }, 1500);
+
+        const formData = new FormData(e.target);
+
+        try {
+            const { error } = await supabase
+                .from('demo_requests')
+                .insert([
+                    {
+                        institution_name: formData.get('institutionName'),
+                        role: formData.get('role'),
+                        campus_size: formData.get('campusSize'),
+                        work_email: formData.get('workEmail')
+                    }
+                ]);
+
+            if (error) {
+                console.error("Supabase insert error details:", {
+                    message: error.message,
+                    code: error.code,
+                    details: error.details,
+                    hint: error.hint
+                });
+                alert(`Error submitting request: ${error.message}. Please check console.`);
+                setFormState('idle');
+                return;
+            }
+
+            // Artificial delay to ensure the loading animation plays long enough to be satisfying
+            setTimeout(() => {
+                setFormState('success');
+            }, 800);
+
+        } catch (err) {
+            console.error("Unexpected error:", err);
+            setFormState('idle');
+        }
     };
 
     useEffect(() => {
@@ -294,33 +328,33 @@ export default function Demo() {
                             <form className="space-y-5" onSubmit={handleDemoRequest}>
                                 <div className="space-y-2">
                                     <label className="font-sora text-xs font-semibold text-cool-mist ml-1">Institution Name</label>
-                                    <input required disabled={formState === 'submitting'} type="text" placeholder="University of Example" className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-white placeholder:text-cool-mist/30 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all disabled:opacity-50" />
+                                    <input name="institutionName" required disabled={formState === 'submitting'} type="text" placeholder="University of Example" className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-white placeholder:text-cool-mist/30 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all disabled:opacity-50" />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <label className="font-sora text-xs font-semibold text-cool-mist ml-1">Institutional Role</label>
-                                        <select disabled={formState === 'submitting'} className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-cool-mist/80 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all appearance-none cursor-pointer disabled:opacity-50">
-                                            <option>Dean / Provost</option>
-                                            <option>Director of Counseling</option>
-                                            <option>Campus IT Security</option>
-                                            <option>Student Affairs</option>
+                                        <select name="role" disabled={formState === 'submitting'} className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-cool-mist/80 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all appearance-none cursor-pointer disabled:opacity-50">
+                                            <option value="Dean / Provost">Dean / Provost</option>
+                                            <option value="Director of Counseling">Director of Counseling</option>
+                                            <option value="Campus IT Security">Campus IT Security</option>
+                                            <option value="Student Affairs">Student Affairs</option>
                                         </select>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="font-sora text-xs font-semibold text-cool-mist ml-1">Campus Size</label>
-                                        <select disabled={formState === 'submitting'} className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-cool-mist/80 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all appearance-none cursor-pointer disabled:opacity-50">
-                                            <option>&lt; 5,000 Students</option>
-                                            <option>5k - 15k Students</option>
-                                            <option>15k - 30k Students</option>
-                                            <option>30k+ Students</option>
+                                        <select name="campusSize" disabled={formState === 'submitting'} className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-cool-mist/80 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all appearance-none cursor-pointer disabled:opacity-50">
+                                            <option value="< 5,000 Students">&lt; 5,000 Students</option>
+                                            <option value="5k - 15k Students">5k - 15k Students</option>
+                                            <option value="15k - 30k Students">15k - 30k Students</option>
+                                            <option value="30k+ Students">30k+ Students</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
                                     <label className="font-sora text-xs font-semibold text-cool-mist ml-1">Work Email</label>
-                                    <input required disabled={formState === 'submitting'} type="email" placeholder="name@edu.edu" className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-white placeholder:text-cool-mist/30 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all disabled:opacity-50" />
+                                    <input name="workEmail" required disabled={formState === 'submitting'} type="email" placeholder="name@edu.edu" className="w-full bg-midnight-blue border border-white/10 rounded-xl px-4 py-3 font-sora text-sm text-white placeholder:text-cool-mist/30 focus:outline-none focus:border-electric-lavender/50 focus:bg-[#1C1C1C] transition-all disabled:opacity-50" />
                                 </div>
 
                                 <button type="submit" disabled={formState === 'submitting'} className="w-full mt-6 magnetic-button bg-electric-lavender text-midnight-blue py-4 rounded-xl font-sora font-bold hover:bg-white transition-colors disabled:opacity-80 disabled:hover:bg-electric-lavender flex items-center justify-center gap-2">
