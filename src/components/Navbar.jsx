@@ -46,9 +46,14 @@ export default function Navbar() {
                     <Link to="/about" className={`link-lift transition-colors ${isActive('/about') ? 'text-electric-lavender' : 'hover:text-electric-lavender'}`}>About</Link>
                     <Link to="/resources" className={`link-lift transition-colors ${isActive('/resources') ? 'text-electric-lavender' : 'hover:text-electric-lavender'}`}>Resources</Link>
                 </div>
-                <Link to="/demo" className="magnetic-button bg-electric-lavender text-midnight-blue px-6 py-2.5 rounded-full font-sora font-semibold text-sm transition-all shadow-[0_0_20px_rgba(139,125,255,0.2)] hover:shadow-[0_0_30px_rgba(139,125,255,0.4)]">
-                    Demo
-                </Link>
+                <div className="flex items-center gap-4">
+                    <Link to="/institution-login" className="text-cool-mist/60 hover:text-white transition-colors font-mono uppercase tracking-widest text-[10px]">
+                        Login
+                    </Link>
+                    <Link to="/demo" className="magnetic-button bg-electric-lavender text-midnight-blue px-6 py-2.5 rounded-full font-sora font-semibold text-sm transition-all shadow-[0_0_20px_rgba(139,125,255,0.2)] hover:shadow-[0_0_30px_rgba(139,125,255,0.4)]">
+                        Demo
+                    </Link>
+                </div>
             </div>
         </nav>
     );
