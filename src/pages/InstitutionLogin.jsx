@@ -26,43 +26,54 @@ export default function InstitutionLogin() {
         setStatus('loading');
 
         try {
-            // First check if the email exists in institution_requests
-            const { data: requestAccess, error: reqError } = await supabase
-                .from('institution_requests')
-                .select('status')
-                .eq('email', email)
-                .maybeSingle();
+            // PRESENTATION FALLBACK: If Supabase isn't configured, mock a successful response for the presentation
+            if (!import.meta.env.VITE_SUPABASE_URL) {
+                setTimeout(() => setStatus('success'), 1500);
+                return;
+            }
 
-            if (!requestAccess) {
-                // Submit new request
-                const { error: insertError } = await supabase
+            // DEVELOPER BYPASS
+            const isDeveloper = email.toLowerCase() === '24100010106.uset@ltsu.ac.in';
+
+            if (!isDeveloper) {
+                // First check if the email exists in institution_requests
+                const { data: requestAccess, error: reqError } = await supabase
                     .from('institution_requests')
-                    .insert([{ email, status: 'pending' }]);
+                    .select('status')
+                    .eq('email', email)
+                    .maybeSingle();
 
-                if (insertError) {
+                if (!requestAccess) {
+                    // Submit new request
+                    const { error: insertError } = await supabase
+                        .from('institution_requests')
+                        .insert([{ email, status: 'pending' }]);
+
+                    if (insertError) {
+                        setStatus('error');
+                        setErrorMsg("Failed to process your request. Please try again.");
+                        return;
+                    }
+
                     setStatus('error');
-                    setErrorMsg("Failed to process your request. Please try again.");
+                    setErrorMsg("Application Submitted. Please wait for Super Admin approval before you can access the portal.");
                     return;
                 }
 
-                setStatus('error');
-                setErrorMsg("Application Submitted. Please wait for Super Admin approval before you can access the portal.");
-                return;
+                if (requestAccess.status === 'pending') {
+                    setStatus('error');
+                    setErrorMsg("Application status: Pending Super Admin Approval. Your access is not yet provisioned.");
+                    return;
+                }
+
+                if (requestAccess.status === 'rejected') {
+                    setStatus('error');
+                    setErrorMsg("Application status: Access Restricted. Please contact support.");
+                    return;
+                }
             }
 
-            if (requestAccess.status === 'pending') {
-                setStatus('error');
-                setErrorMsg("Application status: Pending Super Admin Approval. Your access is not yet provisioned.");
-                return;
-            }
-
-            if (requestAccess.status === 'rejected') {
-                setStatus('error');
-                setErrorMsg("Application status: Access Restricted. Please contact support.");
-                return;
-            }
-
-            // Only proceed if 'approved'
+            // Only proceed if 'approved' or DEVELOPER BYPASS
             const { error } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
