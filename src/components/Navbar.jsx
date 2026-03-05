@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { ChevronDown, Users, Building2, ShieldAlert } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
     const location = useLocation();
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
 
     useEffect(() => {
         // We only want the scroll blur effect on the navbar
@@ -47,9 +49,69 @@ export default function Navbar() {
                     <Link to="/resources" className={`link-lift transition-colors ${isActive('/resources') ? 'text-electric-lavender' : 'hover:text-electric-lavender'}`}>Resources</Link>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Link to="/institution-login" className="text-cool-mist/60 hover:text-white transition-colors font-mono uppercase tracking-widest text-[10px]">
-                        Login
-                    </Link>
+                    {/* Login Dropdown */}
+                    <div
+                        className="relative"
+                        onMouseEnter={() => setIsLoginOpen(true)}
+                        onMouseLeave={() => setIsLoginOpen(false)}
+                    >
+                        <button className="flex items-center gap-1 text-cool-mist/60 hover:text-white transition-colors font-mono uppercase tracking-widest text-[10px] py-2">
+                            Login <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isLoginOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {/* Dropdown Menu */}
+                        <div
+                            className={`absolute right-0 top-full mt-2 w-56 bg-[#121214]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-200 origin-top-right ${isLoginOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'
+                                }`}
+                        >
+                            <div className="p-2 flex flex-col gap-1">
+                                <a
+                                    href="#"
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-not-allowed opacity-50"
+                                    title="Integration Pending"
+                                >
+                                    <div className="w-8 h-8 rounded bg-electric-lavender/10 flex items-center justify-center shrink-0">
+                                        <Users className="w-4 h-4 text-electric-lavender" />
+                                    </div>
+                                    <div>
+                                        <div className="text-white text-sm font-sora font-semibold">Student Login</div>
+                                        <div className="text-[10px] font-mono text-cool-mist/50">Via Wellness Auth</div>
+                                    </div>
+                                </a>
+
+                                <Link
+                                    to="/institution-login"
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group"
+                                    onClick={() => setIsLoginOpen(false)}
+                                >
+                                    <div className="w-8 h-8 rounded bg-green-500/10 flex items-center justify-center shrink-0">
+                                        <Building2 className="w-4 h-4 text-green-400 group-hover:scale-110 transition-transform" />
+                                    </div>
+                                    <div>
+                                        <div className="text-white text-sm font-sora font-semibold">Admin Gateway</div>
+                                        <div className="text-[10px] font-mono text-cool-mist/50">For Deans & Directors</div>
+                                    </div>
+                                </Link>
+
+                                <div className="h-px w-full bg-white/5 my-1" />
+
+                                <Link
+                                    to="/super-admin-login"
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-red-500/5 transition-colors group"
+                                    onClick={() => setIsLoginOpen(false)}
+                                >
+                                    <div className="w-8 h-8 rounded bg-red-500/10 flex items-center justify-center shrink-0">
+                                        <ShieldAlert className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform" />
+                                    </div>
+                                    <div>
+                                        <div className="text-white text-sm font-sora font-semibold">Super Admin</div>
+                                        <div className="text-[10px] font-mono text-cool-mist/50">Global Access Control</div>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+
                     <Link to="/demo" className="magnetic-button bg-electric-lavender text-midnight-blue px-6 py-2.5 rounded-full font-sora font-semibold text-sm transition-all shadow-[0_0_20px_rgba(139,125,255,0.2)] hover:shadow-[0_0_30px_rgba(139,125,255,0.4)]">
                         Demo
                     </Link>

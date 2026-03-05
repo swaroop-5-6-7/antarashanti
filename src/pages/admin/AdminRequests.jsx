@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Shield, Check, X, Search, Building2, Mail, Clock, ShieldCheck, Loader2 } from 'lucide-react';
+import { Shield, Check, X, Search, Building2, Mail, Clock, ShieldCheck, Loader2, Users } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 
 export default function AdminRequests() {
@@ -122,7 +122,8 @@ export default function AdminRequests() {
                         <thead>
                             <tr className="border-b border-white/5 bg-white/[0.02]">
                                 <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider">Institution</th>
-                                <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider">Contact</th>
+                                <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider">Admin Contact</th>
+                                <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider">Campus Details</th>
                                 <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider">Requested On</th>
                                 <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider">Status</th>
                                 <th className="p-4 text-[10px] font-mono uppercase text-cool-mist/40 font-semibold tracking-wider text-right">Actions</th>
@@ -154,9 +155,18 @@ export default function AdminRequests() {
                                             </div>
                                         </td>
                                         <td className="p-4">
+                                            <div className="flex flex-col gap-1 text-cool-mist/70">
+                                                <div className="flex items-center gap-2">
+                                                    <Mail className="w-3 h-3 opacity-50 text-electric-lavender" />
+                                                    <span className="font-mono text-xs">{req.email}</span>
+                                                </div>
+                                                {req.role && <span className="text-[10px] font-sora opacity-60 ml-5">{req.role}</span>}
+                                            </div>
+                                        </td>
+                                        <td className="p-4">
                                             <div className="flex items-center gap-2 text-cool-mist/70">
-                                                <Mail className="w-3 h-3 opacity-50" />
-                                                <span className="font-mono text-xs">{req.email}</span>
+                                                <Users className="w-3 h-3 opacity-50" />
+                                                <span className="font-mono text-xs">{req.campus_size || 'Pending Profile'}</span>
                                             </div>
                                         </td>
                                         <td className="p-4">

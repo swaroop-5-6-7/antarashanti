@@ -23,13 +23,14 @@ export default function Demo() {
 
         try {
             const { error } = await supabase
-                .from('demo_requests')
+                .from('institution_requests')
                 .insert([
                     {
                         institution_name: formData.get('institutionName'),
                         role: formData.get('role'),
                         campus_size: formData.get('campusSize'),
-                        work_email: formData.get('workEmail')
+                        email: formData.get('workEmail'),
+                        status: 'pending'
                     }
                 ]);
 

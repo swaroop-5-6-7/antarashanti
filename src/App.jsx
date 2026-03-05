@@ -13,7 +13,9 @@ import About from './pages/About';
 import Resources from './pages/Resources';
 import Demo from './pages/Demo';
 import InstitutionLogin from './pages/InstitutionLogin';
+import SuperAdminLogin from './pages/SuperAdminLogin';
 import AdminLayout from './components/AdminLayout';
+import SuperAdminLayout from './components/SuperAdminLayout';
 import Overview from './pages/admin/Overview';
 import Escalations from './pages/admin/Escalations';
 import Compliance from './pages/admin/Compliance';
@@ -21,7 +23,11 @@ import Interventions from './pages/admin/Interventions';
 import AdminRequests from './pages/admin/AdminRequests';
 const AppContent = () => {
   const location = useLocation();
-  const isEnterpriseRoute = location.pathname.startsWith('/admin') || location.pathname === '/institution-login';
+  const isEnterpriseRoute =
+    location.pathname.startsWith('/admin') ||
+    location.pathname.startsWith('/super-admin') ||
+    location.pathname === '/institution-login' ||
+    location.pathname === '/super-admin-login';
 
   return (
     <div className="relative w-full bg-midnight-blue text-cool-mist selection:bg-electric-lavender selection:text-midnight-blue overflow-x-hidden min-h-screen flex flex-col">
@@ -42,13 +48,18 @@ const AppContent = () => {
 
           {/* Enterprise / Authority Routes */}
           <Route path="/institution-login" element={<InstitutionLogin />} />
+          <Route path="/super-admin-login" element={<SuperAdminLogin />} />
 
-          {/* Protected Admin Shell */}
+          {/* Protected Institution Admin Shell */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="overview" element={<Overview />} />
             <Route path="escalations" element={<Escalations />} />
             <Route path="compliance" element={<Compliance />} />
             <Route path="interventions" element={<Interventions />} />
+          </Route>
+
+          {/* Protected Super Admin Shell */}
+          <Route path="/super-admin" element={<SuperAdminLayout />}>
             <Route path="requests" element={<AdminRequests />} />
           </Route>
         </Routes>

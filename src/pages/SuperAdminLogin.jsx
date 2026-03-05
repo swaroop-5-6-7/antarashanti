@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Lock, ArrowRight, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { ShieldAlert, ArrowRight, CheckCircle2 } from 'lucide-react';
 
-export default function InstitutionLogin() {
+export default function SuperAdminLogin() {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState('idle'); // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('');
@@ -10,30 +10,20 @@ export default function InstitutionLogin() {
     const handleLogin = async (e) => {
         e.preventDefault();
         setErrorMsg('');
-
-        // Domain validation removed per user request: allowing personal emails like Gmail.
-
         setStatus('loading');
 
         try {
-            // First check if the institution is approved
-            const { data: requestAccess, error: reqError } = await supabase
-                .from('institution_requests')
-                .select('status')
-                .eq('email', email)
-                .maybeSingle();
-
-            if (!requestAccess || requestAccess.status !== 'approved') {
+            // STRICT SUPER ADMIN CHECK
+            if (email.toLowerCase() !== '24100010106.uset@ltsu.ac.in') {
                 setStatus('error');
-                setErrorMsg("Access Denied: Your institution requires Super Admin approval before logging in. Please visit /demo to request access.");
+                setErrorMsg("Access Denied: Unrecognized Super Admin credential.");
                 return;
             }
 
-            // Allowed to proceed with Magic Link (to the Institution Dashboard)
             const { error: signInError } = await supabase.auth.signInWithOtp({
                 email,
                 options: {
-                    emailRedirectTo: `${window.location.origin}/admin/overview`,
+                    emailRedirectTo: `${window.location.origin}/super-admin/requests`,
                 },
             });
 
@@ -62,13 +52,13 @@ export default function InstitutionLogin() {
             <div className="w-full max-w-md relative z-10 animate-[fade-in-up_0.6s_ease-out]">
                 <div className="flex justify-center mb-8">
                     <div className="w-16 h-16 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md flexitems-center justify-center flex shadow-[0_0_30px_rgba(139,125,255,0.15)] items-center">
-                        <Lock className="w-8 h-8 text-electric-lavender" />
+                        <ShieldAlert className="w-8 h-8 text-electric-lavender" />
                     </div>
                 </div>
 
                 <div className="text-center mb-10 text-white">
-                    <h1 className="text-3xl font-bold tracking-tight mb-2">Institution Login</h1>
-                    <p className="text-sm font-mono text-cool-mist/60 uppercase tracking-widest">Campus Well-Being Dashboard</p>
+                    <h1 className="text-3xl font-bold tracking-tight mb-2">Super Admin Portal</h1>
+                    <p className="text-sm font-mono text-cool-mist/60 uppercase tracking-widest">Global Access Control</p>
                 </div>
 
                 <div className="bg-[#121214]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-8 relative overflow-hidden">
@@ -97,7 +87,7 @@ export default function InstitutionLogin() {
 
                             <div>
                                 <label className="block text-xs font-mono text-cool-mist/70 uppercase tracking-widest mb-2">
-                                    Official Institutional Email
+                                    Admin Node Email
                                 </label>
                                 <div className="relative group">
                                     <input
@@ -106,7 +96,7 @@ export default function InstitutionLogin() {
                                         autoFocus
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="dean@university.edu"
+                                        placeholder="admin@ltsu.ac.in"
                                         className="w-full bg-[#0A0A0C] border border-white/10 rounded-xl px-4 py-3.5 text-white font-mono text-sm focus:outline-none focus:border-electric-lavender focus:ring-1 focus:ring-electric-lavender/50 transition-all placeholder:text-cool-mist/30"
                                         disabled={status === 'loading'}
                                     />
@@ -120,11 +110,11 @@ export default function InstitutionLogin() {
                             >
                                 {status === 'loading' ? (
                                     <span className="font-mono text-sm tracking-widest uppercase flex items-center">
-                                        Validating Profile<span className="animate-[ellipsis_1.5s_infinite] inline-block w-4 text-left">...</span>
+                                        Authenticating<span className="animate-[ellipsis_1.5s_infinite] inline-block w-4 text-left">...</span>
                                     </span>
                                 ) : (
                                     <>
-                                        Secure Login <ArrowRight className="w-4 h-4" />
+                                        Request Access Token <ArrowRight className="w-4 h-4" />
                                     </>
                                 )}
                             </button>
@@ -133,7 +123,7 @@ export default function InstitutionLogin() {
                 </div>
 
                 <p className="font-mono text-[9px] text-cool-mist/30 mt-8 text-center uppercase tracking-widest">
-                    Access is restricted. Only validated institutions hold data viewing clearance.
+                    Strict Gate: Unauthorized access attempts are monitored and IP-logged.
                 </p>
             </div>
         </div>

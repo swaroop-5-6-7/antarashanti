@@ -33,22 +33,17 @@ export default function AdminLayout() {
         return <Navigate to="/institution-login" replace />;
     }
 
-    // Role extraction from metadata or JWT claims
-    // We mock a default for UI demonstration until the user sets it.
-    const userRole = session?.user?.user_metadata?.role || 'System Administrator';
+    // Only Institution Admins arrive here. Super Admins go to SuperAdminLayout.
+    const userRole = 'Institution Admin';
 
     const NAV_ITEMS = [
-        { path: '/admin/overview', label: 'Macro Overview', icon: <BarChart className="w-4 h-4" />, roles: ['System Administrator', 'Dean'] },
-        { path: '/admin/escalations', label: 'Escalation Logs', icon: <Activity className="w-4 h-4" />, roles: ['System Administrator', 'Director of Counseling'] },
-        { path: '/admin/compliance', label: 'Compliance & Audit', icon: <Shield className="w-4 h-4" />, roles: ['System Administrator', 'Campus IT'] },
-        { path: '/admin/interventions', label: 'Active Interventions', icon: <FileDigit className="w-4 h-4" />, roles: ['System Administrator', 'Director of Counseling'] },
-        { path: '/admin/requests', label: 'Access Requests', icon: <Shield className="w-4 h-4" />, roles: ['System Administrator'] },
+        { path: '/admin/overview', label: 'Student Well-Being', icon: <Activity className="w-4 h-4" /> },
+        { path: '/admin/escalations', label: 'Stress Alerts', icon: <Bell className="w-4 h-4" /> },
+        { path: '/admin/compliance', label: 'Weekly Trends', icon: <BarChart className="w-4 h-4" /> },
+        { path: '/admin/interventions', label: 'Counseling Requests', icon: <Users className="w-4 h-4" /> }
     ];
 
-    // Simple RBAC check for navigation visibility
-    const authorizedNavItems = NAV_ITEMS.filter(item =>
-        item.roles.includes(userRole) || userRole === 'System Administrator'
-    );
+    const authorizedNavItems = NAV_ITEMS;
 
     return (
         <div className="min-h-screen border-t-4 border-electric-lavender bg-[#0A0A0C] text-cool-mist font-sora flex">
@@ -65,7 +60,7 @@ export default function AdminLayout() {
                 </div>
 
                 <div className="px-6 py-8 flex-1">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-cool-mist/40 mb-4">Command Modules</p>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-cool-mist/40 mb-4">Platform Modules</p>
                     <nav className="space-y-1.5">
                         {authorizedNavItems.map(item => {
                             const isActive = location.pathname.includes(item.path);
@@ -103,11 +98,7 @@ export default function AdminLayout() {
             <main className="flex-1 flex flex-col">
                 <header className="h-16 border-b border-white/5 bg-[#0F0F12] flex items-center px-8 justify-between">
                     <div className="flex items-center gap-2">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                        </span>
-                        <span className="font-mono text-[10px] text-green-500/80 uppercase tracking-widest">Network Secure</span>
+                        {/* Removed the 'Network Secure' technical ping per user request */}
                     </div>
                     <div className="flex items-center gap-6">
                         <span className="font-mono text-[10px] text-cool-mist/40 uppercase">Session ID: {session.user.id.substring(0, 8)}</span>
