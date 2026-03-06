@@ -65,19 +65,19 @@ export default function Navbar() {
                                 }`}
                         >
                             <div className="p-2 flex flex-col gap-1">
-                                <a
-                                    href="#"
-                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-not-allowed opacity-50"
-                                    title="Integration Pending"
+                                <Link
+                                    to="/student/login"
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group"
+                                    onClick={() => setIsLoginOpen(false)}
                                 >
                                     <div className="w-8 h-8 rounded bg-electric-lavender/10 flex items-center justify-center shrink-0">
-                                        <Users className="w-4 h-4 text-electric-lavender" />
+                                        <Users className="w-4 h-4 text-electric-lavender group-hover:scale-110 transition-transform" />
                                     </div>
                                     <div>
                                         <div className="text-white text-sm font-sora font-semibold">Student Login</div>
                                         <div className="text-[10px] font-mono text-cool-mist/50">Via Wellness Auth</div>
                                     </div>
-                                </a>
+                                </Link>
 
                                 <Link
                                     to="/institution-login"

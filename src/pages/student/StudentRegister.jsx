@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { Mail, Lock, Loader2, Command, ArrowRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 
 export default function Register() {
     const [email, setEmail] = useState('');
@@ -41,12 +41,22 @@ export default function Register() {
             return;
         }
 
+        // Add to student_requests
+        const { error: insertError } = await supabase
+            .from('student_requests')
+            .insert([{ email, status: 'pending' }]);
+
+        if (insertError) {
+            console.error("Failed to insert student request:", insertError);
+        }
+
+        setSuccess(true);
+        setLoading(false);
+
         // Supabase returns a session if email confirmation is OFF, or null if it is ON
-        if (data.session) {
-            navigate('/dashboard');
-        } else {
-            setSuccess(true);
-            setLoading(false);
+        if (data?.session) {
+            // Sign them out immediately so they can't bypass!
+            await supabase.auth.signOut();
         }
     };
 
@@ -81,7 +91,7 @@ export default function Register() {
                             <span className="text-green-400 font-bold text-2xl">✓</span>
                         </div>
                         <h3 className="text-xl font-sora font-medium text-cool-mist">Registration Successful!</h3>
-                        <p className="text-cool-mist/70 text-sm">Please check your email to verify your account before logging in.</p>
+                        <p className="text-cool-mist/70 text-sm">Please wait for your institute to approve your access node.</p>
                         <Link to="/" className="inline-flex items-center gap-2 text-electric-lavender font-mono text-xs uppercase tracking-widest hover:text-white transition-colors mt-4">
                             Return to Login <ArrowRight className="w-4 h-4" />
                         </Link>
@@ -164,7 +174,7 @@ export default function Register() {
                             <p className="text-cool-mist/50 font-mono text-[10px] uppercase tracking-widest">
                                 Already have an access node?
                             </p>
-                            <Link to="/" className="text-electric-lavender hover:text-white font-sora text-sm transition-colors mt-2 inline-block">
+                            <Link to="/student/login" className="text-electric-lavender hover:text-white font-sora text-sm transition-colors mt-2 inline-block">
                                 Return to Auth Portal
                             </Link>
                         </div>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { Mail, Lock, Loader2, Command } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -22,6 +22,39 @@ export default function Login() {
             return;
         }
 
+        // Check approval status first
+        const { data: requestStatus, error: requestError } = await supabase
+            .from('student_requests')
+            .select('status')
+            .eq('email', email)
+            .maybeSingle();
+
+        if (requestError) {
+            setError(`Failed to verify institutional approval status: ${requestError.message}`);
+            console.error("Supabase Error Details:", requestError);
+            setLoading(false);
+            return;
+        }
+
+        if (!requestStatus) {
+            setError("Student record not found. Please register first.");
+            setLoading(false);
+            return;
+        }
+
+        if (requestStatus.status === 'pending') {
+            setError("Your account is awaiting institutional approval.");
+            setLoading(false);
+            return;
+        }
+
+        if (requestStatus.status === 'rejected') {
+            setError("Your access has been denied by the institution.");
+            setLoading(false);
+            return;
+        }
+
+        // If approved, proceed with auth
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -35,7 +68,7 @@ export default function Login() {
 
         // On successful login, navigate to the student dashboard
         if (data.session) {
-            navigate('/dashboard');
+            navigate('/student/dashboard');
         }
     };
 
@@ -124,7 +157,7 @@ export default function Login() {
                         <p className="text-cool-mist/50 font-mono text-[10px] uppercase tracking-widest">
                             No access node?
                         </p>
-                        <Link to="/register" className="text-electric-lavender hover:text-white font-sora text-sm transition-colors mt-2 inline-block">
+                        <Link to="/student/register" className="text-electric-lavender hover:text-white font-sora text-sm transition-colors mt-2 inline-block">
                             Initialize Profile
                         </Link>
                     </div>

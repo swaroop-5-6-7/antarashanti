@@ -14,6 +14,9 @@ import Resources from './pages/Resources';
 import Demo from './pages/Demo';
 import InstitutionLogin from './pages/InstitutionLogin';
 import SuperAdminLogin from './pages/SuperAdminLogin';
+import StudentLogin from './pages/student/StudentLogin';
+import StudentRegister from './pages/student/StudentRegister';
+import StudentDashboard from './pages/student/StudentDashboard';
 import AdminLayout from './components/AdminLayout';
 import SuperAdminLayout from './components/SuperAdminLayout';
 import Overview from './pages/admin/Overview';
@@ -21,11 +24,13 @@ import Escalations from './pages/admin/Escalations';
 import Compliance from './pages/admin/Compliance';
 import Interventions from './pages/admin/Interventions';
 import AdminRequests from './pages/admin/AdminRequests';
+import StudentApprovals from './pages/admin/StudentApprovals';
 const AppContent = () => {
   const location = useLocation();
   const isEnterpriseRoute =
     location.pathname.startsWith('/admin') ||
     location.pathname.startsWith('/super-admin') ||
+    location.pathname.startsWith('/student') ||
     location.pathname === '/institution-login' ||
     location.pathname === '/super-admin-login';
 
@@ -46,6 +51,11 @@ const AppContent = () => {
           <Route path="/resources" element={<Resources />} />
           <Route path="/demo" element={<Demo />} />
 
+          {/* Student Portal Routes */}
+          <Route path="/student/login" element={<StudentLogin />} />
+          <Route path="/student/register" element={<StudentRegister />} />
+          <Route path="/student/dashboard" element={<StudentDashboard />} />
+
           {/* Enterprise / Authority Routes */}
           <Route path="/institution-login" element={<InstitutionLogin />} />
           <Route path="/super-admin-login" element={<SuperAdminLogin />} />
@@ -56,6 +66,7 @@ const AppContent = () => {
             <Route path="escalations" element={<Escalations />} />
             <Route path="compliance" element={<Compliance />} />
             <Route path="interventions" element={<Interventions />} />
+            <Route path="students" element={<StudentApprovals />} />
           </Route>
 
           {/* Protected Super Admin Shell */}

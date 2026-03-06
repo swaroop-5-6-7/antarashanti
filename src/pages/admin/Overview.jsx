@@ -1,5 +1,6 @@
 import React from 'react';
-import { Activity, TrendingUp, TrendingDown, Users, AlertTriangle, FileText, Download, Headset, ChevronRight, ShieldAlert } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Activity, TrendingUp, TrendingDown, Users, AlertTriangle, FileText, Download, Headset, ChevronRight, ShieldAlert, Sparkles, BrainCircuit, LineChart as ChartIcon, Lightbulb } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Mock data for the Stress Trend chart
@@ -14,6 +15,8 @@ const stressData = [
 ];
 
 export default function Overview() {
+    const navigate = useNavigate();
+
     return (
         <div className="space-y-6 animate-[fade-in_0.3s_ease-out] pb-12">
 
@@ -50,12 +53,87 @@ export default function Overview() {
                 </div>
 
                 <div className="bg-[#121214] border border-white/5 rounded-xl p-6 relative overflow-hidden group hover:border-green-500/30 transition-colors border-l-2 border-l-green-500/50">
-                    <p className="font-mono text-[10px] uppercase text-cool-mist/50 mb-4">Well-Being Trend</p>
-                    <div className="flex items-end justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className="font-sora text-xl font-bold text-green-400">Improving</span>
+                    <p className="font-mono text-[10px] uppercase text-cool-mist/50 mb-4">Campus Wellness Score</p>
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-end justify-between w-full">
+                            <span className="font-sora text-3xl font-bold text-green-400">74<span className="text-xl text-cool-mist/50">/100</span></span>
+                            <TrendingUp className="w-5 h-5 text-green-400/80" />
                         </div>
-                        <TrendingDown className="w-5 h-5 text-green-400/80" />
+                        <p className="font-mono text-[9px] text-green-400/60 uppercase tracking-wider">↑ Up from 71 last week</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* AI Insights Section (NEW) */}
+            <div className="bg-[#121214] border border-white/5 rounded-xl p-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-electric-lavender/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="w-8 h-8 rounded-lg bg-electric-lavender/10 flex items-center justify-center border border-electric-lavender/20 shadow-[0_0_15px_rgba(139,125,255,0.15)]">
+                        <Sparkles className="w-4 h-4 text-electric-lavender" />
+                    </div>
+                    <div>
+                        <h2 className="text-lg font-sora font-semibold text-white">AI Insights</h2>
+                        <p className="text-xs font-mono text-cool-mist/50 mt-1">Algorithmic pattern detection across campus metrics.</p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+                    {/* Insight Card */}
+                    <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 hover:bg-white/[0.04] transition-colors group">
+                        <div className="flex items-center gap-2 mb-3">
+                            <BrainCircuit className="w-4 h-4 text-electric-lavender/70" />
+                            <h3 className="font-sora text-sm font-medium text-white">AI Insight</h3>
+                        </div>
+                        <p className="font-mono text-xs text-cool-mist leading-relaxed mb-3">
+                            Stress levels increased by <span className="text-red-400">18%</span> in engineering departments during the last 5 days.
+                        </p>
+                        <p className="font-mono text-[10px] text-cool-mist/50 italic border-l-2 border-white/10 pl-2">
+                            This pattern historically appears 1–2 weeks before midterms.
+                        </p>
+                    </div>
+
+                    {/* Forecast Card */}
+                    <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 hover:bg-white/[0.04] transition-colors group">
+                        <div className="flex items-center gap-2 mb-3">
+                            <ChartIcon className="w-4 h-4 text-yellow-500/70" />
+                            <h3 className="font-sora text-sm font-medium text-white">AI Risk Forecast</h3>
+                        </div>
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center text-xs font-mono">
+                                <span className="text-cool-mist/70">Predicted Event:</span>
+                                <span className="text-yellow-400 font-semibold">Stress Spike Next Week</span>
+                            </div>
+                            <div className="flex justify-between items-center text-xs font-mono">
+                                <span className="text-cool-mist/70">Confidence:</span>
+                                <span className="text-white">82%</span>
+                            </div>
+                            <div className="flex justify-between items-center text-xs font-mono border-t border-white/5 pt-2 mt-2">
+                                <span className="text-cool-mist/70">Primary Driver:</span>
+                                <span className="text-cool-mist">Midterm Exams</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Suggestion Card */}
+                    <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 hover:bg-white/[0.04] transition-colors group">
+                        <div className="flex items-center gap-2 mb-3">
+                            <Lightbulb className="w-4 h-4 text-green-400/70" />
+                            <h3 className="font-sora text-sm font-medium text-white">AI Suggested Action</h3>
+                        </div>
+                        <p className="font-mono text-xs text-cool-mist mb-4">
+                            Proactive intervention recommended to mitigate forecasted spike.
+                        </p>
+                        <ul className="space-y-2 font-mono text-[11px] text-cool-mist/80">
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-400 mt-0.5">•</span>
+                                <span>Increase counseling slot availability.</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-green-400 mt-0.5">•</span>
+                                <span>Send campus-wide wellness resource reminder.</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -162,7 +240,7 @@ export default function Overview() {
                     <p className="text-xs font-mono text-cool-mist/50 mb-6">What would you like to do?</p>
 
                     <div className="space-y-3">
-                        <button className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
+                        <button onClick={() => navigate('/admin/escalations')} className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-lg bg-red-400/10 text-red-400 flex items-center justify-center">
                                     <ShieldAlert className="w-4 h-4" />
@@ -172,7 +250,7 @@ export default function Overview() {
                             <ChevronRight className="w-4 h-4 text-cool-mist/30 group-hover:text-white transition-colors" />
                         </button>
 
-                        <button className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
+                        <button onClick={() => navigate('/admin/interventions')} className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-lg bg-electric-lavender/10 text-electric-lavender flex items-center justify-center">
                                     <Headset className="w-4 h-4" />
@@ -182,7 +260,7 @@ export default function Overview() {
                             <ChevronRight className="w-4 h-4 text-cool-mist/30 group-hover:text-white transition-colors" />
                         </button>
 
-                        <button className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
+                        <button onClick={() => alert('Generating Weekly Report... A secure copy has been dispatched to your institutional email.')} className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-lg bg-green-400/10 text-green-400 flex items-center justify-center">
                                     <FileText className="w-4 h-4" />
@@ -192,7 +270,7 @@ export default function Overview() {
                             <ChevronRight className="w-4 h-4 text-cool-mist/30 group-hover:text-white transition-colors" />
                         </button>
 
-                        <button className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
+                        <button onClick={() => window.open('/campus-readiness-brief.pdf', '_blank')} className="w-full flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all group">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 rounded-lg bg-blue-400/10 text-blue-400 flex items-center justify-center">
                                     <Download className="w-4 h-4" />

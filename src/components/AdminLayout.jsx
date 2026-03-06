@@ -40,7 +40,8 @@ export default function AdminLayout() {
         { path: '/admin/overview', label: 'Student Well-Being', icon: <Activity className="w-4 h-4" /> },
         { path: '/admin/escalations', label: 'Stress Alerts', icon: <Bell className="w-4 h-4" /> },
         { path: '/admin/compliance', label: 'Weekly Trends', icon: <BarChart className="w-4 h-4" /> },
-        { path: '/admin/interventions', label: 'Counseling Requests', icon: <Users className="w-4 h-4" /> }
+        { path: '/admin/interventions', label: 'Counseling Requests', icon: <Users className="w-4 h-4" /> },
+        { path: '/admin/students', label: 'Student Approvals', icon: <FileDigit className="w-4 h-4" /> }
     ];
 
     const authorizedNavItems = NAV_ITEMS;

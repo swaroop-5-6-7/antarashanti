@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 import {
     Command,
     LogOut,
@@ -588,18 +588,18 @@ export default function Dashboard() {
 
                                         {/* Weekly Mini-Calendar for Streak */}
                                         <div className="flex gap-1 md:gap-2 relative z-10 w-full md:w-auto justify-between">
-                                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
+                                            {Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString('en-US', { weekday: 'short' }); }).map((day, index) => {
                                                 const isCompleted = index < streakDays;
                                                 const isToday = index === streakDays;
 
                                                 // Hypothetical mock data for the days
                                                 const mockData = [
-                                                    { mood: 'Stressed', intensity: 8, emoji: '🌪️', color: 'text-orange-400', reason: 'Exams, Academic pressure', aiInsight: "You noted feeling tense in the morning. Writing down a priority list helped you regain control.", date: "Monday" },
-                                                    { mood: 'Calm', intensity: 4, emoji: '🌊', color: 'text-blue-400', reason: 'Good sleep', aiInsight: "A peaceful start to the day. You maintained this balance through your evening walk.", date: "Tuesday" },
-                                                    { mood: 'Happy', intensity: 7, emoji: '✨', color: 'text-green-400', reason: 'Friends', aiInsight: "Social connections boosted your mood significantly today.", date: "Wednesday" },
-                                                    { mood: 'Anxious', intensity: 6, emoji: '⚡', color: 'text-yellow-400', reason: 'Deadlines', aiInsight: "While anxious about upcoming tasks, you successfully utilized the 60-second breathing tool.", date: "Thursday" },
-                                                    { mood: 'Neutral', intensity: 5, emoji: '☁️', color: 'text-cool-mist', reason: 'Routine', aiInsight: "A balanced, steady day. Maintaining routine builds emotional resilience.", date: "Friday" },
-                                                    { mood: 'Calm', intensity: 3, emoji: '🌊', color: 'text-blue-400', reason: 'Rest', aiInsight: "Excellent recovery day. You allowed yourself time to recharge.", date: "Saturday" },
+                                                    { mood: 'Stressed', intensity: 8, emoji: '🌪️', color: 'text-orange-400', reason: 'Exams, Academic pressure', aiInsight: "You noted feeling tense in the morning. Writing down a priority list helped you regain control.", date: Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString("en-US", { weekday: "long" }); })[0] },
+                                                    { mood: 'Calm', intensity: 4, emoji: '🌊', color: 'text-blue-400', reason: 'Good sleep', aiInsight: "A peaceful start to the day. You maintained this balance through your evening walk.", date: Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString("en-US", { weekday: "long" }); })[1] },
+                                                    { mood: 'Happy', intensity: 7, emoji: '✨', color: 'text-green-400', reason: 'Friends', aiInsight: "Social connections boosted your mood significantly today.", date: Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString("en-US", { weekday: "long" }); })[2] },
+                                                    { mood: 'Anxious', intensity: 6, emoji: '⚡', color: 'text-yellow-400', reason: 'Deadlines', aiInsight: "While anxious about upcoming tasks, you successfully utilized the 60-second breathing tool.", date: Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString("en-US", { weekday: "long" }); })[3] },
+                                                    { mood: 'Neutral', intensity: 5, emoji: '☁️', color: 'text-cool-mist', reason: 'Routine', aiInsight: "A balanced, steady day. Maintaining routine builds emotional resilience.", date: Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString("en-US", { weekday: "long" }); })[4] },
+                                                    { mood: 'Calm', intensity: 3, emoji: '🌊', color: 'text-blue-400', reason: 'Rest', aiInsight: "Excellent recovery day. You allowed yourself time to recharge.", date: Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d.toLocaleDateString("en-US", { weekday: "long" }); })[5] },
                                                     null // Sunday (Today/Uncompleted)
                                                 ];
 
